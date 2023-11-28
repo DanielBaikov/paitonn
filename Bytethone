@@ -1,0 +1,58 @@
+def read_file(filename):
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+        data = [line.strip().split() for line in lines]
+    return data
+
+def write_file(filename, data):
+    with open(filename, 'w') as file:
+        for item in data:
+            file.write(' '.join(map(str, item)) + '\n')
+
+def merge_files(file1, file2):
+    admin_data = read_file(file1)
+    guest_data = read_file(file2)
+
+    merged_data = admin_data + guest_data
+
+    return merged_data
+
+def calculate_average_age(data, role):
+    ages = [int(item[3]) for item in data if item[2] == role]
+    if not ages:
+        return 0
+    return sum(ages) / len(ages)
+
+def find_extremes_age(data, role):
+    role_data = [int(item[3]) for item in data if item[2] == role]
+    if not role_data:
+        return 0, 0
+    return min(role_data), max(role_data)
+
+def count_roles(data):
+    admin_count = sum(1 for item in data if item[2] == 'Администратор')
+    guest_count = sum(1 for item in data if item[2] == 'Гость')
+    return admin_count, guest_count
+
+if name == "__main__":
+    admin_file = "admin.txt"
+    guest_file = "viesis.txt"
+    merged_file = "merged.txt"
+
+    # Merge files
+    merged_data = merge_files(admin_file, guest_file)
+    write_file(merged_file, merged_data)
+
+    # Calculate average age for administrators
+    avg_admin_age = calculate_average_age(merged_data, 'Администратор')
+    print(f"Средний возраст администраторов: {avg_admin_age:.2f}")
+
+    # Find extremes age for administrators
+    min_admin_age, max_admin_age = find_extremes_age(merged_data, 'Администратор')
+    print(f"Самый молодой администратор: {min_admin_age} лет")
+    print(f"Самый старший администратор: {max_admin_age} лет")
+
+    # Count administrators and guests
+    admin_count, guest_count = count_roles(merged_data)
+    print(f"Количество администраторов: {admin_count}")
+    print(f"Количество гостей: {guest_count}")
