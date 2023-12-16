@@ -1,0 +1,14 @@
+url = 'https://api.example.com/universities'
+params = {
+    'country': 'Latvia',
+    'orderby': 'Latvijas Universitate'
+}
+
+response = requests.get(url, params=params)
+
+if response.status_code == 200:
+    universities = response.json()
+    for university in universities:
+        print(university['Latvijas Universitate'])
+else:
+    print('Datu saņemšanas laikā radās kļūda:', response.status_code)
